@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+
 <div class="card text-center">
   <div class="card-header" style="background-color: #e3f2fd; color: 000034;">
     Classroom Details
@@ -8,9 +10,49 @@
   <div class="card-body">
     <h5 class="card-title" style="color: 000034;">{{classroom.name}} {{classroom.subject}}</h5>
     <p class="card-text" style="color: 000034;">{{classroom.year}}</p>
-    <a href="{% url 'classroom-update' classroom.id %}" class="btn" style="background-color: #000034; color: white;">Update</a>
-    <a href="{% url 'classroom-delete' classroom.id %}" class="btn" style="background-color: #FFA500; color: #000034;">Delete</a>
-  </div>
+
+    {% if request.user == classroom.teacher %}
+    
+    <a href="{% url 'classroom-update' classroom.id %}" class="btn btn-primary" style="background-color: #FFA500; color: #000034;">update</a>
+    <a href="{% url 'classroom-delete' classroom.id %}" class="btn btn-primary" style="background-color: #FFA500; color: #000034;">delete</a>
+    <a href="{% url 'student-create' classroom.id %}" class="btn btn-primary " style="background-color: #FFA500; color: #000034;">Add Student</a>
+ 	 {%endif%}
+
+   
+
+</div>
 </div>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">name</th>
+      <th scope="col">date of birth</th>
+       <th scope="col">gender</th>
+      <th scope="col">grade</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for student in students %}
+    <tr>
+      
+      <td>{{student.name}}</td>
+      <td>{{student.date_of_birth}}</td>
+      <td>{{student.gender}}</td>
+      <td>{{student.exam_grade}}</td>
+      <td><a href="{% url 'student-update' student.id %}" class="btn" style="background-color: #000034; color: white;">Update</a></td>
+      <td><a href="{% url 'student-delete' classroom.id student.id %}" class="btn" style="background-color: #FFA500; color: #000034;">Delete</a></td>
+
+    </tr>
+    {% endfor %}
+
+   </tbody>
+</table>
+
+
+
 {% endblock content %}
+
+
